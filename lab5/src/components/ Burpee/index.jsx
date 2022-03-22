@@ -1,62 +1,66 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-const Timer = ({ setPageState }) => {
-  const [second, setSecond] = useState("10");
-  const [isActive, setIsActive] = useState(false);
-  const [timer, setTimer] = useState(10);
+const App = ({ setPageState }) => {
+
+  const countdown = useRef(null);
+
+
+  const [timer, setTimer] = useState("00:00:00");
+
+  const getTimeRemaining = (e) => {
+    const total = Date.parse(e) - Date.parse(new Date());
+    const seconds = Math.floor((total / 1000) % 60);
+    
+    return {
+      total,
+     
+      seconds,
+    };
+  };
+
+  const startTimer = (e) => {
+    let { total,  seconds } = getTimeRemaining(e);
+    if (total >= 0) {
+      setTimer(
+       
+          (seconds > 9 ? seconds : "0" + seconds)
+      );
+    }
+  };
+
+  const clearTimer = (e) => {
+    setTimer("30");
+
+    if (countdown.current) clearInterval(countdown.current);
+    const id = setInterval(() => {
+      startTimer(e);
+    }, 1000);
+    countdown.current = id;
+  };
+
+  const getDeadTime = () => {
+    let timeOver = new Date();
+
+    timeOver.setSeconds(timeOver.getSeconds() + 30);
+    return timeOver;
+  };
 
   useEffect(() => {
-    let timerInterval;
-    if (isActive) {
-      timerInterval = setInterval(() => {
-        const secondCounter = timer % 60;
-        
+    clearTimer(getDeadTime());
+  }, []);
 
-        let computedSecond =
-          String(secondCounter).length === 1
-            ? `0${secondCounter}`
-            : secondCounter;
-      
-        setSecond(computedSecond);
-     
-
-        setTimer((counter) => counter - 1);
-      }, 1000);
-    }
-
-    return () => clearInterval(timerInterval);
-  }, [isActive, timer]);
-
-  function stopTimer() {
-     if (second === 0) stopTimer();
-    setIsActive(false);
-    setTimer(10);
-    setSecond("10");
-
-  }
+  const onClickReset = () => {
+    clearTimer(getDeadTime());
+  };
 
   return (
-    <div class="container">
-      
-      <br></br>
-      <br></br>
-      <div class="time">
-        Countdown:
-  
-        <span class="second">{second}</span>
-      </div>
-      <br></br>
-      <div class="buttons">
-        <button onClick={() => setIsActive(!isActive)} class="start">
-          {isActive ? "Pause" : "Start"}
-        </button>
-        <button onClick={stopTimer} class="reset">
-          Reset
-        </button>
-        <button onClick={() => setPageState("index")}>Back</button>
-      </div>
+    <div className="App">
+      Countdown:
+      <h2>{timer} seconds left</h2>
+      <button onClick={onClickReset}>Reset</button>
+      <button onClick={() => setPageState("index")}>Return</button>
     </div>
   );
 };
 
-export default Timer;
+export default App;

@@ -22,6 +22,7 @@ function App() {
     <div className="App">
    
       {menuData.map((menu) => {
+      <Stylesheet />
         return <Menu key={menu.menuId} data={menu} />;
       })}
     </div>

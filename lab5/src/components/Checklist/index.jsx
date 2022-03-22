@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 const App = ({ setPageState }) => {
   const [checked, setChecked] = useState([]);
-  const checkList = [
+  const listItems = [
     "Burpees",
     "Pushups",
     "Situps",
@@ -13,7 +13,7 @@ const App = ({ setPageState }) => {
   ];
 
 
-  const handleCheck = (event) => {
+  const checkList = (event) => {
     var updatedList = [...checked];
     if (event.target.checked) {
       updatedList = [...checked, event.target.value];
@@ -23,25 +23,24 @@ const App = ({ setPageState }) => {
     setChecked(updatedList);
   };
 
-  // Generate string of checked items
+
   const checkedItems = checked.length
     ? checked.reduce((total, item) => {
         return total + ", " + item;
       })
     : "";
 
-  // Return classes based on whether item is checked
   var isChecked = (item) =>
     checked.includes(item) ? "checked-item" : "not-checked-item";
 
   return (
     <div className="app">
       <div className="checkList">
-        <div className="title">What workouts did you do today?:</div>
+        <div>What workouts did you do today?:</div>
         <div className="list-container">
-          {checkList.map((item, index) => (
+          {listItems.map((item, index) => (
             <div key={index}>
-              <input value={item} type="checkbox" onChange={handleCheck} />
+              <input value={item} type="checkbox" onChange={checkList} />
               <span className={isChecked(item)}>{item}</span>
             </div>
           ))}
