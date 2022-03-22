@@ -1,32 +1,26 @@
 import React, { useState, useEffect } from "react";
 
 const Timer = ({ setPageState }) => {
-  const [second, setSecond] = useState("00");
-  const [minute, setMinute] = useState("00");
+  const [second, setSecond] = useState("10");
   const [isActive, setIsActive] = useState(false);
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(10);
 
   useEffect(() => {
-  
     let timerInterval;
     if (isActive) {
       timerInterval = setInterval(() => {
         const secondCounter = timer % 60;
-        const minuteCounter = Math.floor(timer / 60);
+        
 
         let computedSecond =
           String(secondCounter).length === 1
             ? `0${secondCounter}`
             : secondCounter;
-        let computedMinute =
-          String(minuteCounter).length === 1
-            ? `0${minuteCounter}`
-            : minuteCounter;
-
+      
         setSecond(computedSecond);
-        setMinute(computedMinute);
+     
 
-        setTimer((counter) => counter + 1);
+        setTimer((counter) => counter - 1);
       }, 1000);
     }
 
@@ -34,22 +28,21 @@ const Timer = ({ setPageState }) => {
   }, [isActive, timer]);
 
   function stopTimer() {
+     if (second === 0) stopTimer();
     setIsActive(false);
-    setTimer(0);
-    setSecond("00");
-    setMinute("00");
-    
+    setTimer(10);
+    setSecond("10");
+
   }
 
   return (
     <div class="container">
-      Bicycling
+      
       <br></br>
       <br></br>
       <div class="time">
-        Timer:
-        <span class="minute">{minute}</span>
-        <span>:</span>
+        Countdown:
+  
         <span class="second">{second}</span>
       </div>
       <br></br>

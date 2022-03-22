@@ -4,6 +4,8 @@ import Bike from "../Bike";
 import Jump from "../Jump";
 import Run from "../Run";
 import Situp from "../Situp";
+import Burpee from "../ Burpee"
+import Checklist from "../Checklist";
 
 const MenuItem = (props) => {
   const [pageState, setPageState] = useState("index");
@@ -23,6 +25,8 @@ const MenuItem = (props) => {
       ) : null}
       {pageState === "running" ? <Run setPageState={setPageState} /> : null}
       {pageState === "situps" ? <Situp setPageState={setPageState} /> : null}
+      {pageState === "burpee" ? <Burpee setPageState={setPageState} /> : null}
+       {pageState === "checklist" ? <Checklist setPageState={setPageState} /> : null}
   
     </div>
   );
@@ -31,7 +35,6 @@ const MenuItem = (props) => {
 const ButtonGroup = ({ itemDescription, pageState, setPageState }) => {
   return (
     <>
-      
       <p>{itemDescription}</p>
       <button onClick={() => setPageState("pushups")}>Push Ups</button>
       <button onClick={() => setPageState("bicycling")}>Bicycling</button>
@@ -40,6 +43,8 @@ const ButtonGroup = ({ itemDescription, pageState, setPageState }) => {
       </button>
       <button onClick={() => setPageState("running")}>Running</button>
       <button onClick={() => setPageState("situps")}>Sit Ups</button>
+      <button onClick={() => setPageState("burpee")}>Burpees</button>
+      <button onClick={() => setPageState("checklist")}>Checklist</button>
     </>
   );
 };
